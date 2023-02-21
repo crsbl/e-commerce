@@ -133,7 +133,7 @@ const mock = (SearchOptions, filterCombobox) => {
       number.name.slice(0, SearchOptions.inputSearch.length) ==
       SearchOptions.inputSearch
   );
-console.log(filterCombobox,result);
+
   switch (filterCombobox) {
     case 0:
       result.sort((a, b) => {
@@ -145,7 +145,6 @@ console.log(filterCombobox,result);
         }
         return 0;
       });
-      console.log(result);
       break;
     case 1:
       result.sort((a, b) => {

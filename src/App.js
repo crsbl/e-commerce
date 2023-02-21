@@ -12,15 +12,66 @@ function App() {
     inputCombo: "Por nombre",
     filter: 0,
   });
-
   const [statePagination, setStatePagination] = useState([]);
   const [selectedPage, setSelectedPage] = useState(0);
+
+  const [stateCart, setStateCart] = useState({
+    arrayCart: [],
+    stateCart: false,
+  });
 
   const changeValueInputId = (e) => {
     setStateSearchOptions({
       ...stateSearchOptions,
       [e.currentTarget.name]: e.currentTarget.value,
     });
+  };
+
+  const ShoppingCart = ({ hookstateCart }) => {
+    return (
+      <div
+        style={
+          hookstateCart[0].stateCart ? { display: "flex" } : { display: "none" }
+        }
+        className="divContainerShoppingCart00"
+      >
+        <div className="flexColumn">
+          <div className="flexRow">
+            <h4>Nombre</h4>
+            <h4>Precio</h4>
+            <h4>Acciones</h4>
+          </div>
+          {hookstateCart[0].arrayCart.map((listArrayCart, index) => {
+            return (
+              <div className="flexRow">
+                <h4>{listArrayCart.name}</h4>
+                <h4>{listArrayCart.price}</h4>
+                <h4>
+                  <button
+                    onClick={() => {
+                      let indexResult = index;
+                      hookstateCart[1]({
+                        ...hookstateCart[0],
+                        arrayCart: hookstateCart[0].arrayCart.filter(
+                          (list, index) => index !== indexResult
+                        ),
+                      });
+                      console.log(
+                        hookstateCart[0].arrayCart.filter(
+                          (list, index) => index !== indexResult
+                        )
+                      );
+                    }}
+                  >
+                    Quitar
+                  </button>
+                </h4>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   const ComboBox = ({ hookStateInputCombobox }) => {
@@ -49,7 +100,7 @@ function App() {
                     filter: index,
                   });
                   hookStateInputCombobox[1]({
-                    filter:index,
+                    filter: index,
                     inputCombo: listArrayFilter,
                   });
                 }}
@@ -62,10 +113,30 @@ function App() {
       </div>
     );
   };
+  useEffect(() => {
+    const items = JSON.parse(sessionStorage.getItem("items"));
+    console.log(items);
+  
+
+    if( items !== null){
+      if (items.length > 0) {
+        setStateCart({ ...stateCart, arrayCart: [...items] });
+      }
+    }
+
+   
+  }, []);
+
+  useEffect(() => {
+    if (stateCart.arrayCart.length > 0 ) {
+      sessionStorage.setItem("items", JSON.stringify(stateCart.arrayCart));
+    }
+  }, [stateCart.arrayCart]);
 
   useEffect(() => {
     setStateProducts(mock(stateSearchOptions, stateCombobox.filter));
-  }, [stateSearchOptions,stateCombobox.filter]);
+    setSelectedPage(0);
+  }, [stateSearchOptions, stateCombobox.filter]);
 
   useEffect(() => {
     let countPagination = 0;
@@ -86,7 +157,20 @@ function App() {
     <div className="App flexColumn">
       <header className="flexRow">
         <h2>E-commerce en proceso</h2>
-        <button>Carrito</button>
+        <div className="flexColumn">
+          <button
+            onClick={() => {
+              if (stateCart.stateCart == true) {
+                setStateCart({ ...stateCart, stateCart: false });
+              } else {
+                setStateCart({ ...stateCart, stateCart: true });
+              }
+            }}
+          >
+            Carrito
+          </button>
+          <ShoppingCart hookstateCart={[stateCart, setStateCart]} />
+        </div>
       </header>
       <main className="flexRow">
         <section>
@@ -123,7 +207,19 @@ function App() {
                     <h4>Precio</h4> <h4>{list.price}</h4>
                   </div>
 
-                  <button>Agregar</button>
+                  <button
+                    onClick={() => {
+                      setStateCart({
+                        ...stateCart,
+                        arrayCart: [
+                          ...stateCart.arrayCart,
+                          { name: list.name, price: list.price },
+                        ],
+                      });
+                    }}
+                  >
+                    Agregar
+                  </button>
                 </div>
               );
             })}

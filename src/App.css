@@ -26,8 +26,20 @@ padding: 1rem 0 1rem 0;
   justify-content:space-between;
 align-items: center;
 }
-header>button{
+header>div>button{
   margin: 0 2rem 0 0 ;
+  position: relative;
+}
+header>div{
+ position: relative;
+}
+
+.divContainerShoppingCart00{
+  position: absolute;
+  top:2rem;
+  right: .5rem;
+  width: 10rem;
+  background-color: coral;
 }
 
 header > h2 {
