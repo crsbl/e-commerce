@@ -78,7 +78,7 @@ function App() {
 
     return (
       <div className="flexColumn divContainerComboBox00">
-        <input
+        <input disabled
           onClick={() => {
             setStateCombobox(true);
           }}
