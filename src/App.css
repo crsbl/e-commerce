@@ -26,29 +26,67 @@ header {
   justify-content: space-between;
   align-items: center;
 }
+header > div{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap:1rem;
+  margin: 0 0 0 2rem;
+}
 
-header > h2{
-margin: 0 0 0 2rem;
+header > div >h2{
+color: white;
 font-family: Montserrat, sans-serif;
 }
 
-header > div > button {
-  margin: 0 2rem 0 0;
+
+header > div:nth-child(2) > button {
+ padding: .3rem .5rem .3rem .5rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: .5rem;
+  background-color: transparent;
+  border:solid .13rem rgb(231, 231, 231);
   position: relative;
   font-family: Montserrat, sans-serif;
   font-size: 1.5rem;
-  padding: .3rem;
   cursor: pointer;
+  font-weight: 700;
+  color: rgb(236, 235, 235);
+  border-radius: 2rem;
+ transition: .3s;
 }
-header > div {
+header > div:nth-child(2) > button:hover {
+  border:solid .13rem rgb(255, 255, 255);
+  background-color: rgb(243, 243, 243);
+  color: rgb(112, 112, 112);
+}
+
+
+header > div:nth-child(2) > button{
+ 
+}
+
+
+header > div:nth-child(2) {
+
   position: relative;
+  left: -1rem;
+}
+
+header > div:nth-child(2) > button >img {
+  width: 3rem;
+}
+header > div:nth-child(1) > img{
+  width: 4rem;
 }
 
 .divContainerShoppingCart00 {
   position: absolute;
   z-index: 2;
-  top: 3rem;
-  right: 0.5rem;
+  top: 3.8rem;
+  right: 0rem;
   border: solid .1rem rgb(161, 161, 161);
   background-color: white;
   padding: 2rem .5rem 2rem .5rem;

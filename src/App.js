@@ -1,6 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
-import "./responsiveApp.css"
+import "./responsiveApp.css";
+import imgTitleSvg from "./img/commerce_icon.svg";
+import imgCartSvg from "./img/cart_icon.svg";
 import { useEffect, useState } from "react";
 import mock from "./mock";
 
@@ -48,21 +50,20 @@ function App() {
                 <div className="flexRow">
                   <h4>{listArrayCart.name}</h4>
                   <h4>{listArrayCart.price}</h4>
-                 
-                    <button
-                      onClick={() => {
-                        let indexResult = index;
-                        hookstateCart[1]({
-                          ...hookstateCart[0],
-                          arrayCart: hookstateCart[0].arrayCart.filter(
-                            (list, index) => index !== indexResult
-                          ),
-                        });
-                      }}
-                    >
-                      Quitar
-                    </button>
-                  
+
+                  <button
+                    onClick={() => {
+                      let indexResult = index;
+                      hookstateCart[1]({
+                        ...hookstateCart[0],
+                        arrayCart: hookstateCart[0].arrayCart.filter(
+                          (list, index) => index !== indexResult
+                        ),
+                      });
+                    }}
+                  >
+                    Quitar
+                  </button>
                 </div>
               );
             })}
@@ -78,7 +79,8 @@ function App() {
 
     return (
       <div className="flexColumn divContainerComboBox00">
-        <input readonly
+        <input
+          readonly
           onClick={() => {
             setStateCombobox(true);
           }}
@@ -151,11 +153,13 @@ function App() {
   return (
     <div className="App flexColumn">
       <header className="flexRow">
-        <h2>E-commerce en proceso</h2>
+        <div>
+          <img src={imgTitleSvg}></img>
+          <h2>E-commerce</h2>
+        </div>
         <div className="flexColumn">
           <button
             onClick={() => {
-              
               if (stateCart.stateCart == true) {
                 setStateCart({ ...stateCart, stateCart: false });
               } else {
@@ -163,7 +167,8 @@ function App() {
               }
             }}
           >
-            Carrito {stateCart.arrayCart.length}
+            <img src={imgCartSvg}></img>
+           {stateCart.arrayCart.length}
           </button>
           <ShoppingCart hookstateCart={[stateCart, setStateCart]} />
         </div>
@@ -183,7 +188,7 @@ function App() {
             />
           </div>
         </section>
-        <section >
+        <section>
           {stateProducts
             .slice(selectedPage * 4, selectedPage * 4 + 4)
             .map((list) => {
