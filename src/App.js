@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import "./responsiveApp.css"
 import { useEffect, useState } from "react";
 import mock from "./mock";
 
@@ -41,34 +42,31 @@ function App() {
             <h4>Precio</h4>
             <h4>Acciones</h4>
           </div>
-          {hookstateCart[0].arrayCart.map((listArrayCart, index) => {
-            return (
-              <div className="flexRow">
-                <h4>{listArrayCart.name}</h4>
-                <h4>{listArrayCart.price}</h4>
-                <h4>
-                  <button
-                    onClick={() => {
-                      let indexResult = index;
-                      hookstateCart[1]({
-                        ...hookstateCart[0],
-                        arrayCart: hookstateCart[0].arrayCart.filter(
-                          (list, index) => index !== indexResult
-                        ),
-                      });
-                      console.log(
-                        hookstateCart[0].arrayCart.filter(
-                          (list, index) => index !== indexResult
-                        )
-                      );
-                    }}
-                  >
-                    Quitar
-                  </button>
-                </h4>
-              </div>
-            );
-          })}
+          <div className="flexColumn">
+            {hookstateCart[0].arrayCart.map((listArrayCart, index) => {
+              return (
+                <div className="flexRow">
+                  <h4>{listArrayCart.name}</h4>
+                  <h4>{listArrayCart.price}</h4>
+                 
+                    <button
+                      onClick={() => {
+                        let indexResult = index;
+                        hookstateCart[1]({
+                          ...hookstateCart[0],
+                          arrayCart: hookstateCart[0].arrayCart.filter(
+                            (list, index) => index !== indexResult
+                          ),
+                        });
+                      }}
+                    >
+                      Quitar
+                    </button>
+                  
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
@@ -79,7 +77,7 @@ function App() {
     const [stateCombobox, setStateCombobox] = useState(false);
 
     return (
-      <div className="flexColumn">
+      <div className="flexColumn divContainerComboBox00">
         <input
           onClick={() => {
             setStateCombobox(true);
@@ -116,19 +114,16 @@ function App() {
   useEffect(() => {
     const items = JSON.parse(sessionStorage.getItem("items"));
     console.log(items);
-  
 
-    if( items !== null){
+    if (items !== null) {
       if (items.length > 0) {
         setStateCart({ ...stateCart, arrayCart: [...items] });
       }
     }
-
-   
   }, []);
 
   useEffect(() => {
-    if (stateCart.arrayCart.length > 0 ) {
+    if (stateCart.arrayCart.length > 0) {
       sessionStorage.setItem("items", JSON.stringify(stateCart.arrayCart));
     }
   }, [stateCart.arrayCart]);
@@ -141,10 +136,10 @@ function App() {
   useEffect(() => {
     let countPagination = 0;
     let arrayPagination = [];
-    if (stateProducts.length % 8 == 0) {
+    if (stateProducts.length % 4 == 0) {
       countPagination = Math.trunc(stateProducts.length / 8);
     } else {
-      countPagination = Math.trunc(stateProducts.length / 8) + 1;
+      countPagination = Math.trunc(stateProducts.length / 4) + 1;
     }
 
     for (let i = 0; i < countPagination; i++) {
@@ -160,6 +155,7 @@ function App() {
         <div className="flexColumn">
           <button
             onClick={() => {
+              
               if (stateCart.stateCart == true) {
                 setStateCart({ ...stateCart, stateCart: false });
               } else {
@@ -167,13 +163,13 @@ function App() {
               }
             }}
           >
-            Carrito
+            Carrito {stateCart.arrayCart.length}
           </button>
           <ShoppingCart hookstateCart={[stateCart, setStateCart]} />
         </div>
       </header>
-      <main className="flexRow">
-        <section>
+      <main>
+        <section className="flexColumn">
           <h2>Buscar</h2>
           <input
             name="inputSearch"
@@ -187,35 +183,42 @@ function App() {
             />
           </div>
         </section>
-        <section className="flexRow">
+        <section >
           {stateProducts
-            .slice(selectedPage * 8, selectedPage * 8 + 8)
+            .slice(selectedPage * 4, selectedPage * 4 + 4)
             .map((list) => {
               return (
                 <div className="divContainerEcommerce00 flexColumn">
-                  <img src=""></img>
+                  <img src={list.urlImg}></img>
                   <h3>{list.name}</h3>
 
                   <div className="flexColumn">
-                    <h4>Informacion</h4>
+                    <h4>Información:</h4>
                     <h4>{list.info}</h4>
                   </div>
                   <div className="flexRow">
-                    <h4>Stock</h4> <h4>{list.stock}</h4>
+                    <h4>Stock:</h4> <h4>{list.stock}</h4>
                   </div>
                   <div className="flexRow">
-                    <h4>Precio</h4> <h4>{list.price}</h4>
+                    <h4>Precio:</h4> <h4>{list.price}</h4>
                   </div>
 
                   <button
                     onClick={() => {
-                      setStateCart({
-                        ...stateCart,
-                        arrayCart: [
-                          ...stateCart.arrayCart,
-                          { name: list.name, price: list.price },
-                        ],
-                      });
+                      if (
+                        stateCart.arrayCart.find(
+                          (listHookstateCart) =>
+                            listHookstateCart.name == list.name
+                        ) == undefined
+                      ) {
+                        setStateCart({
+                          ...stateCart,
+                          arrayCart: [
+                            ...stateCart.arrayCart,
+                            { name: list.name, price: list.price },
+                          ],
+                        });
+                      }
                     }}
                   >
                     Agregar
@@ -225,13 +228,13 @@ function App() {
             })}
         </section>
       </main>
-      <div className="FlexRow">
+      <div>
         {statePagination.map((listStatePagination) => {
           return (
             <button
               style={
                 selectedPage === listStatePagination
-                  ? { backgroundColor: "red" }
+                  ? { backgroundColor: "rgb(199, 197, 197)" }
                   : {}
               }
               onClick={() => {
